@@ -6,7 +6,8 @@ bci_iv_2a:
   data_max: 100
   data_min: -100
   extensions:
-    - .raw.fif
+    # - .raw.fif
+    - .gdf
   picks:
     - eeg
   train_params:
@@ -39,18 +40,18 @@ mmidb:
   lr: 0.00001
   folds: 5
 
-
-
-
+# TODO figure out how to convert from csv to raw.fif
 ern:
   name: "Kaggle ERN Competition"
-  toplevel: /home/opc/datasets/ern/
+  toplevel: /home/opc/datasets/ern/train
+  filename_format: "Data_{subject:2}_Sess{session:2}"
   tmin: -0.7
   tlen: 2
   data_max: 3500
   data_min: -4010
   extensions:
-    - .raw.fif
+    # - .raw.fif
+    - .csv
   picks:
     - eeg
   rename_channels:
@@ -118,6 +119,7 @@ erpbci:
   data_max: 0.00631
   data_min: -0.00283
   toplevel: /home/opc/datasets/physionet.org/files/erpbci/1.0.0/
+  # filename_format: "s{subject}"
   tmin: -0.1
   tlen: 0.7
   # We low-passed offline using this parameter just so it didn't happen over and over.
@@ -125,8 +127,8 @@ erpbci:
 #  lpf: 120
   extensions:
   # Swap the following for using default dataset
-#    - .edf
-    - .fif
+    - .edf
+#    - .fif
   picks:
     - eeg
   exclude_people:

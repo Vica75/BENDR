@@ -8,7 +8,7 @@ import time
 import utils
 from result_tracking import ThinkerwiseResultTracker
 
-from dn3.configuratron import ExperimentConfig
+from dn3.configuratron.config import ExperimentConfig
 from dn3.data.dataset import Thinker
 from dn3.trainable.processes import StandardClassification
 
@@ -17,8 +17,6 @@ from dn3_ext import BENDRClassification, LinearHeadBENDR
 # Since we are doing a lot of loading, this is nice to suppress some tedious information
 import mne
 mne.set_log_level(False)
-
-print(torch.cuda.is_available())
 
 
 if __name__ == '__main__':
@@ -41,8 +39,11 @@ if __name__ == '__main__':
     if args.results_filename:
         results = ThinkerwiseResultTracker()
 
+    # experiment.datasets - a dictionary where the keys are dataset names and the values are DatasetConfig variables
+    # experiment.datasets.items() - a list of tuples (string name, DatasetConfig)
     for ds_name, ds in tqdm.tqdm(experiment.datasets.items(), total=len(experiment.datasets.items()), desc='Datasets'):
         added_metrics, retain_best, _ = utils.get_ds_added_metrics(ds_name, args.metrics_config)
+
         for fold, (training, validation, test) in enumerate(tqdm.tqdm(utils.get_lmoso_iterator(ds_name, ds))):
 
             if torch.cuda.is_available():

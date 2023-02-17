@@ -1,9 +1,9 @@
 Configuratron:
   use_only:
-    - erpbci
     - sleep-edf
-    - ern
+    - erpbci
     - bci_iv_2a
+    - ern 
     - mmidb
   preload: True
   sfreq: 256
