@@ -630,7 +630,8 @@ class LoaderERPBCI:
     def __call__(cls, path: Path):
         # Data has to be preloaded to add events to it, swap edf for fif if haven't offline processed first
         # run = mne.io.read_raw_edf(str(path), preload=True)
-        run = mne.io.read_raw_fif(str(path), preload=True)
+        # run = mne.io.read_raw_fif(str(path), preload=True)
+        run = mne.io.read_raw(str(path), preload=True)
         if len(run.annotations) == 0:
             raise DN3ConfigException
         cls._make_blank_stim(run)
