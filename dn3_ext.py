@@ -637,10 +637,6 @@ class LoaderERPBCI:
         cls._make_blank_stim(run)
         target_letter = cls._get_target_and_crop(run)
         events, occurrences = mne.events_from_annotations(run, lambda a: int(target_letter in a) + 1)
-        run.add_events(events, stim_channel=cls.STIM_CHANNEL)
+        run.add_events(events, stim_channel=cls.STIM_CHANNEL) 
 
-        events_dict = dict()
-        for e in range(len(events)):
-            events_dict[events[e][2]] = events[e][0]
-
-        return run, events_dict
+        return run, occurrences 
