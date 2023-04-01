@@ -1,10 +1,15 @@
 bci_iv_2a:
   name: "BCI Competition IV 2a"
   toplevel: /home/opc/datasets/bci_2a/
+  filename_format: "A{subject}-{session}"
   tmin: -2
   tlen: 6
   data_max: 100
   data_min: -100
+  exclude_channels:
+    - EOG-left
+    - EOG-central
+    - EOG-right
   extensions:
     # - .raw.fif
     - .gdf
@@ -40,7 +45,6 @@ mmidb:
   lr: 0.00001
   folds: 5
 
-# TODO figure out how to convert from csv to raw.fif
 ern:
   name: "Kaggle ERN Competition"
   toplevel: /home/opc/datasets/ern/train
@@ -50,8 +54,8 @@ ern:
   data_max: 3500
   data_min: -4010
   extensions:
-    # - .raw.fif
-    - .csv
+    - .raw.fif
+    # - .csv
   picks:
     - eeg
   rename_channels:
@@ -108,7 +112,7 @@ sleep-edf:
     - 'Event marker'
   train_params:
     epochs: 40
-    batch_size: 80
+    batch_size: 10  # it was 80
     balance_method: undersample
     validation_interval: 1000
   lr: 0.00005

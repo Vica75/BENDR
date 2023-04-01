@@ -1,5 +1,8 @@
 import torch
 import yaml
+import numpy as np
+import mne
+import csv
 
 from dn3.metrics.base import balanced_accuracy, auroc
 from dn3.transforms.instance import To1020
@@ -107,3 +110,27 @@ def dump_tensors(gpu_only=True):
         except Exception as e:
             pass
     print("Total size:", total_size)
+
+
+def ern_csv_handler(path):
+    # Read the CSV file as a NumPy array
+    data = np.loadtxt(path , delimiter=',')
+
+    # Some information about the channels
+    with open(path, newline='') as f:
+        reader = csv.reader(f)
+        channels = next(reader)
+        channels.pop(0)
+    
+    # print(channels)
+    ch_names = channels  
+    
+    sfreq = 500  # Hz
+
+    # Create the info structure needed by MNE
+    info = mne.create_info(ch_names, sfreq)
+
+    # Finally, create the Raw object
+    raw = mne.io.RawArray(data, info)
+
+    return raw

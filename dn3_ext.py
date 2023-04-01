@@ -640,3 +640,4 @@ class LoaderERPBCI:
         run.add_events(events, stim_channel=cls.STIM_CHANNEL) 
 
         return run, occurrences 
+    
