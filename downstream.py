@@ -43,10 +43,10 @@ if __name__ == '__main__':
     # experiment.datasets.items() - a list of tuples (string name, DatasetConfig)
     for ds_name, ds in tqdm.tqdm(experiment.datasets.items(), total=len(experiment.datasets.items()), desc='Datasets'):
         added_metrics, retain_best, _ = utils.get_ds_added_metrics(ds_name, args.metrics_config)
-        
+
         for fold, (training, validation, test) in enumerate(tqdm.tqdm(utils.get_lmoso_iterator(ds_name, ds))):
-            # if torch.cuda.is_available():
-              # tqdm.tqdm.write(torch.cuda.memory_summary())
+            if torch.cuda.is_available():
+              tqdm.tqdm.write(torch.cuda.memory_summary())
 
             if args.model == utils.MODEL_CHOICES[0]:
                 model = BENDRClassification.from_dataset(training, multi_gpu=args.multi_gpu)
@@ -60,9 +60,8 @@ if __name__ == '__main__':
             process.set_optimizer(torch.optim.Adam(process.parameters(), ds.lr, weight_decay=0.01))
 
             # Fit everything
-            # print(ds.train_params.__getitem__('_d'))
             process.fit(training_dataset=training, validation_dataset=validation, warmup_frac=0.1,
-                        retain_best=retain_best, pin_memory=False, **ds.train_params._d)
+                        retain_best=retain_best, pin_memory=False, **ds.train_params.__getitem__('_d'))
 
             if args.results_filename:
                 if isinstance(test, Thinker):

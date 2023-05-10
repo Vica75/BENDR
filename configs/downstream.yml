@@ -1,14 +1,16 @@
 Configuratron:
   use_only:
+    # - tuep
     - bci_iv_2a
-    - sleep-edf
-    - mmidb
-    - erpbci
-    - ern 
-  preload: False
+    # - erpbci
+    # - mmidb
+    # - sleep-edf
+    # - ern
+  preload: True
   sfreq: 256
   deep1010:
     return_mask: False
+  load_onthefly: True
   
 
 encoder_weights: trained_weights/encoder.pt

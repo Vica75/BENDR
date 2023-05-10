@@ -7,11 +7,13 @@ import csv
 from dn3.metrics.base import balanced_accuracy, auroc
 from dn3.transforms.instance import To1020
 
-from dn3_ext import LoaderERPBCI, LinearHeadBENDR, BENDRClassification
+from dn3_ext import LoaderERPBCI, LoaderBCIIV, LinearHeadBENDR, BENDRClassification
 
 
 CUSTOM_LOADERS = dict(
     erpbci=LoaderERPBCI,
+    bci_iv_2a=LoaderBCIIV,
+    # ern=LoaderERN
 )
 
 EXTRA_METRICS = dict(bac=balanced_accuracy,

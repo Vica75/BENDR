@@ -641,3 +641,62 @@ class LoaderERPBCI:
 
         return run, occurrences 
     
+class LoaderBCIIV:
+    """
+
+    I've put it in an object so that the solution is somewhat self-contained.
+    """
+
+    STIM_CHANNEL = 'STI 014'
+
+    @staticmethod
+    def _make_blank_stim(raw):
+        info = mne.create_info([LoaderBCIIV.STIM_CHANNEL], raw.info['sfreq'], ['stim'])
+        stim_raw = mne.io.RawArray(np.zeros((1, len(raw.times))), info)
+        raw.add_channels([stim_raw], force_update_info=True)
+
+    @classmethod
+    def __call__(cls, path: Path):
+        # Data has to be preloaded to add events to it, swap gdf for fif if haven't offline processed first
+        # run = mne.io.read_raw_gdf(str(path), preload=True)
+        run = mne.io.read_raw_fif(str(path), preload=True)
+
+        if len(run.annotations) == 0:
+            raise DN3ConfigException
+
+        cls._make_blank_stim(run)
+        events, occurrences = mne.events_from_annotations(run)
+        run.add_events(events, stim_channel=cls.STIM_CHANNEL) 
+
+        return run, occurrences 
+    
+
+# TODO add annotations
+# class LoaderERN:
+#     """
+
+#     I've put it in an object so that the solution is somewhat self-contained.
+#     """
+
+#     STIM_CHANNEL = 'FeedBackEvent'
+
+#     @staticmethod
+#     def _make_blank_stim(raw):
+#         info = mne.create_info([LoaderERN.STIM_CHANNEL], raw.info['sfreq'], ['stim'])
+#         stim_raw = mne.io.RawArray(np.zeros((1, len(raw.times))), info)
+#         raw.add_channels([stim_raw], force_update_info=True)
+
+#     @classmethod
+#     def __call__(cls, path: Path):
+#         # Data has to be preloaded to add events to it, swap edf for fif if haven't offline processed first
+#         # run = mne.io.read_raw_gdf(str(path), preload=True)
+#         run = mne.io.read_raw_fif(str(path), preload=True)
+
+#         if len(run.annotations) == 0:
+#             raise DN3ConfigException
+
+#         cls._make_blank_stim(run)
+#         events, occurrences = mne.events_from_annotations(run)
+#         run.add_events(events, stim_channel=cls.STIM_CHANNEL) 
+
+#         return run, occurrences 

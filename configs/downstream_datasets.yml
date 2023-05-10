@@ -1,24 +1,37 @@
 bci_iv_2a:
   name: "BCI Competition IV 2a"
-  toplevel: /home/opc/datasets/bci_2a/
+  toplevel: /home/opc/datasets/bci_preprocessed/
   filename_format: "A{subject}-{session}"
+  # why is this different from the dn3 paper??? (tmin = -0.5, tlen = 4.5)
   tmin: -2
   tlen: 6
   data_max: 100
   data_min: -100
-  exclude_channels:
-    - EOG-left
-    - EOG-central
-    - EOG-right
   extensions:
-    # - .raw.fif
-    - .gdf
+    - .raw.fif
+    # - .gdf
   picks:
     - eeg
   train_params:
     epochs: 15
     batch_size: 60 # This dataset likes batches of ~60 (community is overfitting this)
   lr: 0.00005
+
+
+tuep:
+  name: "Temple University Epilepsy Corpus"
+  toplevel: /home/opc/datasets/tuep/
+  tmin: 0  # these are random for now
+  tlen: 6
+  data_min: True
+  data_max: True
+  picks:
+    - eeg
+  train_params:  # these are random as well
+    epochs: 7
+    batch_size: 20
+  lr: 0.00001
+  folds: 5
 
 
 mmidb:
@@ -47,12 +60,15 @@ mmidb:
 
 ern:
   name: "Kaggle ERN Competition"
-  toplevel: /home/opc/datasets/ern/train
+  toplevel: /home/opc/datasets/ern_preprocessed
   filename_format: "Data_{subject:2}_Sess{session:2}"
   tmin: -0.7
   tlen: 2
   data_max: 3500
   data_min: -4010
+  events:
+    - E1
+    - E2
   extensions:
     - .raw.fif
     # - .csv
@@ -116,7 +132,7 @@ sleep-edf:
     balance_method: undersample
     validation_interval: 1000
   lr: 0.00005
-  folds: 10
+  folds: 10  # it was 10
 
 
 erpbci:
